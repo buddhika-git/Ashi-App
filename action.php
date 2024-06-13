@@ -6,7 +6,14 @@ if(isset($_POST["category"])) {
     // Assuming $con is your mysqli connection object
 
     // Query to fetch best selling products from the view
-    $best_selling_query = "SELECT * FROM best_selling_products";
+    // Query to fetch best selling products from the view
+    $best_selling_query = "SELECT p.product_id, p.product_title AS product_name, 
+                                  SUM(o.qty) AS total_quantity_sold, p.product_image 
+                           FROM products p
+                           JOIN orders o ON p.product_id = o.product_id
+                           WHERE o.p_status = 'Completed'
+                           GROUP BY p.product_id, p.product_title, p.product_image
+                           ORDER BY total_quantity_sold DESC";
     
     $run_query = mysqli_query($con, $best_selling_query) or die(mysqli_error($con));
     
@@ -21,10 +28,16 @@ if(isset($_POST["category"])) {
             $product_id = $row["product_id"];
             $product_name = $row["product_name"];
             $total_quantity_sold = $row["total_quantity_sold"];
+            $product_image = $row["product_image"];
+            
+            // Assuming product images are stored in a folder named 'product_images'
+            $image_path = "product_images/$product_image";
             
             echo "
                 <div class='btn navbar-btn product' pid='$product_id'>
                     <a href='product.php?p=$product_id'>
+					<div class='product-img'>
+                        <img src='$image_path' alt='$product_name' class='product-image'> </div>
                         $product_name
                         <small class='qty'>($total_quantity_sold)</small>
                     </a>
@@ -32,7 +45,6 @@ if(isset($_POST["category"])) {
             ";
         }
     }
-    
     echo "
             </div>
         </div>";
