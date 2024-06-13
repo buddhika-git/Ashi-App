@@ -152,7 +152,13 @@ session_start();
     background-color: #f5f5f5;
 }
 
-       
+.curved-input {
+    border-radius: 25px;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
         
         </style>
 
@@ -229,14 +235,7 @@ session_start();
 <div class="col-md-6">
     <div class="header-search">
         <form action="search.php" method="GET">
-            <select class="input-select" name="category">
-                <option value="0">All Categories</option>
-                <option value="1">Tank</option>
-                <option value="2">Food</option>
-                <option value="3">Furniture</option>
-            </select>
-            <input class="input" id="search" name="search" type="text" placeholder="Search here" onkeyup="fetchProducts()">
-            <button type="submit" class="search-btn">Search</button>
+            <input class="input curved-input" id="search" name="search" type="text" placeholder="Search here" onkeyup="fetchProducts()">
             <div id="suggestions" class="dropdown-menu" style="display:none; position:absolute; z-index:1000; background-color:white; width: 100%;">
             </div>
         </form>
