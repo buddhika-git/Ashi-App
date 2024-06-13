@@ -76,14 +76,7 @@ include 'header.php';
 						<!-- /aside Widget -->
 
 						<!-- aside Widget -->
-						<div class="aside">
-							<h3 class="aside-title">Top selling</h3>
-							<div id="get_product_home">
-								<!-- product widget -->
-								
-								<!-- product widget -->
-							</div>
-						</div>
+
 						<!-- /aside Widget -->
 					</div>
 					<!-- /ASIDE -->
@@ -94,10 +87,10 @@ include 'header.php';
 						<div class="store-filter clearfix">
 							<div class="store-sort">
 								<label>
-									Sort By:
+									Price Sort By:
 									<select class="input-select">
-										<option value="0">Popular</option>
-										<option value="1">Position</option>
+										<option value="0">Low to High</option>
+										<option value="1">High to Low</option>
 									</select>
 								</label>
 
