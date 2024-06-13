@@ -109,8 +109,56 @@ session_start();
         content:"\f054"
     }
         
+	.dropdown-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 100%;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
 
-       
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    color: #333;
+    text-align: inherit;
+    white-space: nowrap;
+    background: 0 0;
+    border: 0;
+    cursor: pointer;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+
+.curved-input {
+    border-radius: 25px;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
         
         </style>
 
@@ -183,21 +231,47 @@ session_start();
 						<!-- /LOGO -->
 
 						<!-- SEARCH BAR -->
-						<div class="col-md-6">
-							<div class="header-search">
-								<form>
-									<select class="input-select">
-										<option value="0">All Categories</option>
-										<option value="1">Tank</option>
-										<option value="1">Food </option>
-                                                                                <option value="1">Furniture </option>
-                                                                                
-									</select>
-									<input class="input" id="search" type="text" placeholder="Search here">
-									<button type="submit" id="search_btn" class="search-btn">Search</button>
-								</form>
-							</div>
-						</div>
+<!-- SEARCH BAR -->
+<div class="col-md-6">
+    <div class="header-search">
+        <form action="search.php" method="GET">
+            <input class="input curved-input" id="search" name="search" type="text" placeholder="Search here" onkeyup="fetchProducts()">
+            <div id="suggestions" class="dropdown-menu" style="display:none; position:absolute; z-index:1000; background-color:white; width: 100%;">
+            </div>
+        </form>
+    </div>
+</div>
+<!-- /SEARCH BAR -->
+
+<script>
+function fetchProducts() {
+    let query = document.getElementById('search').value;
+    if (query.length > 0) {
+        fetch(`fetch_products.php?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                let suggestions = document.getElementById('suggestions');
+                suggestions.innerHTML = '';
+                data.forEach(item => {
+                    let option = document.createElement('a');
+                    option.className = 'dropdown-item';
+                    option.href = `product.php?p=${item.id}`;
+                    option.innerText = item.title;
+                    option.onclick = (e) => {
+                        document.getElementById('search').value = item.title;
+                    };
+                    suggestions.appendChild(option);
+                });
+                suggestions.style.display = 'block';
+            });
+    } else {
+        document.getElementById('suggestions').style.display = 'none';
+    }
+}
+</script>
+
+
+
 						<!-- /SEARCH BAR -->
 
 						<!-- ACCOUNT -->
