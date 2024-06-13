@@ -109,6 +109,48 @@ session_start();
         content:"\f054"
     }
         
+	.dropdown-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 100%;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    color: #333;
+    text-align: inherit;
+    white-space: nowrap;
+    background: 0 0;
+    border: 0;
+    cursor: pointer;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
 
        
         
@@ -195,7 +237,7 @@ session_start();
             </select>
             <input class="input" id="search" name="search" type="text" placeholder="Search here" onkeyup="fetchProducts()">
             <button type="submit" class="search-btn">Search</button>
-            <div id="suggestions" class="dropdown-menu" style="display:none; position:absolute; z-index:1000; background-color:white;">
+            <div id="suggestions" class="dropdown-menu" style="display:none; position:absolute; z-index:1000; background-color:white; width: 100%;">
             </div>
         </form>
     </div>
@@ -216,9 +258,8 @@ function fetchProducts() {
                     option.className = 'dropdown-item';
                     option.href = `product.php?p=${item.id}`;
                     option.innerText = item.title;
-                    option.onclick = () => {
+                    option.onclick = (e) => {
                         document.getElementById('search').value = item.title;
-                        suggestions.style.display = 'none';
                     };
                     suggestions.appendChild(option);
                 });
@@ -229,6 +270,7 @@ function fetchProducts() {
     }
 }
 </script>
+
 
 
 						<!-- /SEARCH BAR -->
