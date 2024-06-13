@@ -183,21 +183,54 @@ session_start();
 						<!-- /LOGO -->
 
 						<!-- SEARCH BAR -->
-						<div class="col-md-6">
-							<div class="header-search">
-								<form>
-									<select class="input-select">
-										<option value="0">All Categories</option>
-										<option value="1">Tank</option>
-										<option value="1">Food </option>
-                                                                                <option value="1">Furniture </option>
-                                                                                
-									</select>
-									<input class="input" id="search" type="text" placeholder="Search here">
-									<button type="submit" id="search_btn" class="search-btn">Search</button>
-								</form>
-							</div>
-						</div>
+<!-- SEARCH BAR -->
+<div class="col-md-6">
+    <div class="header-search">
+        <form action="search.php" method="GET">
+            <select class="input-select" name="category">
+                <option value="0">All Categories</option>
+                <option value="1">Tank</option>
+                <option value="2">Food</option>
+                <option value="3">Furniture</option>
+            </select>
+            <input class="input" id="search" name="search" type="text" placeholder="Search here" onkeyup="fetchProducts()">
+            <button type="submit" class="search-btn">Search</button>
+            <div id="suggestions" class="dropdown-menu" style="display:none; position:absolute; z-index:1000; background-color:white;">
+            </div>
+        </form>
+    </div>
+</div>
+<!-- /SEARCH BAR -->
+
+<script>
+function fetchProducts() {
+    let query = document.getElementById('search').value;
+    if (query.length > 0) {
+        fetch(`fetch_products.php?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                let suggestions = document.getElementById('suggestions');
+                suggestions.innerHTML = '';
+                data.forEach(item => {
+                    let option = document.createElement('a');
+                    option.className = 'dropdown-item';
+                    option.href = `product.php?p=${item.id}`;
+                    option.innerText = item.title;
+                    option.onclick = () => {
+                        document.getElementById('search').value = item.title;
+                        suggestions.style.display = 'none';
+                    };
+                    suggestions.appendChild(option);
+                });
+                suggestions.style.display = 'block';
+            });
+    } else {
+        document.getElementById('suggestions').style.display = 'none';
+    }
+}
+</script>
+
+
 						<!-- /SEARCH BAR -->
 
 						<!-- ACCOUNT -->
