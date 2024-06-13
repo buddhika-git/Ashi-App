@@ -1,0 +1,16 @@
+CREATE VIEW best_selling_products AS
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY SUM(o.qty) DESC) AS id,
+    p.product_id,
+    p.product_title AS product_name,
+    SUM(o.qty) AS total_quantity_sold
+FROM 
+    orders o
+JOIN 
+    products p ON o.product_id = p.product_id
+WHERE 
+    o.p_status = 'Completed' -- Assuming 'Completed' indicates successfully completed orders
+GROUP BY 
+    p.product_id, p.product_title
+ORDER BY 
+    total_quantity_sold DESC;

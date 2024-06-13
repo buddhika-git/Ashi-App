@@ -2,55 +2,62 @@
 session_start();
 $ip_add = getenv("REMOTE_ADDR");
 include "db.php";
-if(isset($_POST["category"])){
-	$category_query = "SELECT * FROM categories";
+if(isset($_POST["category"])) {
+    // Assuming $con is your mysqli connection object
+
+    // Query to fetch best selling products from the view
+    // Query to fetch best selling products from the view
+    $best_selling_query = "SELECT p.product_id, p.product_title AS product_name, 
+                                  SUM(o.qty) AS total_quantity_sold, p.product_image 
+                           FROM products p
+                           JOIN orders o ON p.product_id = o.product_id
+                           WHERE o.p_status = 'Completed'
+                           GROUP BY p.product_id, p.product_title, p.product_image
+                           ORDER BY total_quantity_sold DESC";
     
-	$run_query = mysqli_query($con,$category_query) or die(mysqli_error($con));
-	echo "
-		
+    $run_query = mysqli_query($con, $best_selling_query) or die(mysqli_error($con));
+    
+    echo "
+        <div class='aside'>
+            <h3 class='aside-title'>Best Selling Products</h3>
+            <div class='btn-group-vertical'>
+    ";
+    
+    if(mysqli_num_rows($run_query) > 0) {
+        while($row = mysqli_fetch_array($run_query)) {
+            $product_id = $row["product_id"];
+            $product_name = $row["product_name"];
+            $total_quantity_sold = $row["total_quantity_sold"];
+            $product_image = $row["product_image"];
             
-            <div class='aside'>
-							<h3 class='aside-title'>Categories</h3>
-							<div class='btn-group-vertical'>
-	";
-	if(mysqli_num_rows($run_query) > 0){
-        $i=1;
-		while($row = mysqli_fetch_array($run_query)){
+            // Assuming product images are stored in a folder named 'product_images'
+            $image_path = "product_images/$product_image";
             
-			$cid = $row["cat_id"];
-			$cat_name = $row["cat_title"];
-            $sql = "SELECT COUNT(*) AS count_items FROM products WHERE product_cat=$i";
-            $query = mysqli_query($con,$sql);
-            $row = mysqli_fetch_array($query);
-            $count=$row["count_items"];
-            $i++;
-            
-            
-			echo "
-					
-                    <div type='button' class='btn navbar-btn category' cid='$cid'>
-									
-									<a href='#'>
-										<span  ></span>
-										$cat_name
-										<small class='qty'>($count)</small>
-									</a>
-								</div>
-                    
-			";
-            
-		}
-        
-        
-		echo "</div>";
-	}
+            echo "
+                <div class='btn navbar-btn product' pid='$product_id'>
+                    <a href='product.php?p=$product_id'>
+					<div class='product-img'>
+                        <img src='$image_path' alt='$product_name' class='product-image'> </div>
+                        $product_name
+                        <small class='qty'>($total_quantity_sold)</small>
+                    </a>
+                </div>
+            ";
+        }
+    }
+    echo "
+            </div>
+        </div>";
 }
+
+
+
 if(isset($_POST["brand"])){
 	$brand_query = "SELECT * FROM brands";
 	$run_query = mysqli_query($con,$brand_query);
 	echo "
 		<div class='aside'>
-							<h3 class='aside-title'>Brand</h3>
+							<h3 class='aside-title'>Brands We Offer</h3>
 							<div class='btn-group-vertical'>
 	";
 	if(mysqli_num_rows($run_query) > 0){
@@ -128,7 +135,7 @@ if(isset($_POST["getProduct"])){
 									<div class='product-body'>
 										<p class='product-category'>$cat_name</p>
 										<h3 class='product-name header-cart-item-name'><a href='product.php?p=$pro_id'>$pro_title</a></h3>
-										<h4 class='product-price header-cart-item-info'>$pro_price<del class='product-old-price'>$990.00</del></h4>
+										<h4 class='product-price header-cart-item-info'>$pro_price</h4>
 										<div class='product-rating'>
 											<i class='fa fa-star'></i>
 											<i class='fa fa-star'></i>
@@ -194,7 +201,7 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 									<div class='product-body'>
 										<p class='product-category'>$cat_name</p>
 										<h3 class='product-name header-cart-item-name'><a href='product.php?p=$pro_id'>$pro_title</a></h3>
-										<h4 class='product-price header-cart-item-info'>$pro_price<del class='product-old-price'>$990.00</del></h4>
+										<h4 class='product-price header-cart-item-info'>$pro_price</h4>
 										<div class='product-rating'>
 											<i class='fa fa-star'></i>
 											<i class='fa fa-star'></i>
