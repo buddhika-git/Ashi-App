@@ -27,7 +27,7 @@
 							</ul>
 							<span class="copyright">
 								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								Copyright &copy;<script>document.write(new Date().getFullYear());</script>Brain4ce Education Solutions Pvt. Ltd. All rights Reserved
+								Copyright &copy;<script>document.write(new Date().getFullYear());</script>Ashi All rights Reserved
 							</span>
 						</div>
 
@@ -35,11 +35,11 @@
 							<div class="footer">
 								<h3 class="footer-title">Categories</h3>
 								<ul class="footer-links">
-									<li><a href="#">Mobiles</a></li>
-									<li><a href="#">Men</a></li>
-									<li><a href="#">Food</a></li>
-									<li><a href="#">Kids</a></li>
-									<li><a href="#">Accessories</a></li>
+									<li><a href="#">Fish</a></li>
+									<li><a href="#">Fish Foods</a></li>
+									<li><a href="#">Tanks</a></li>
+									<li><a href="#">Air Pumps</a></li>
+									<li><a href="#">Aquarium Tools</a></li>
 								</ul>
 							</div>
 						</div>
