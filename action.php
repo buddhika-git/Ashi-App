@@ -2,55 +2,50 @@
 session_start();
 $ip_add = getenv("REMOTE_ADDR");
 include "db.php";
-if(isset($_POST["category"])){
-	$category_query = "SELECT * FROM categories";
+if(isset($_POST["category"])) {
+    // Assuming $con is your mysqli connection object
+
+    // Query to fetch best selling products from the view
+    $best_selling_query = "SELECT * FROM best_selling_products";
     
-	$run_query = mysqli_query($con,$category_query) or die(mysqli_error($con));
-	echo "
-		
+    $run_query = mysqli_query($con, $best_selling_query) or die(mysqli_error($con));
+    
+    echo "
+        <div class='aside'>
+            <h3 class='aside-title'>Best Selling Products</h3>
+            <div class='btn-group-vertical'>
+    ";
+    
+    if(mysqli_num_rows($run_query) > 0) {
+        while($row = mysqli_fetch_array($run_query)) {
+            $product_id = $row["product_id"];
+            $product_name = $row["product_name"];
+            $total_quantity_sold = $row["total_quantity_sold"];
             
-            <div class='aside'>
-							<h3 class='aside-title'>Categories</h3>
-							<div class='btn-group-vertical'>
-	";
-	if(mysqli_num_rows($run_query) > 0){
-        $i=1;
-		while($row = mysqli_fetch_array($run_query)){
-            
-			$cid = $row["cat_id"];
-			$cat_name = $row["cat_title"];
-            $sql = "SELECT COUNT(*) AS count_items FROM products WHERE product_cat=$i";
-            $query = mysqli_query($con,$sql);
-            $row = mysqli_fetch_array($query);
-            $count=$row["count_items"];
-            $i++;
-            
-            
-			echo "
-					
-                    <div type='button' class='btn navbar-btn category' cid='$cid'>
-									
-									<a href='#'>
-										<span  ></span>
-										$cat_name
-										<small class='qty'>($count)</small>
-									</a>
-								</div>
-                    
-			";
-            
-		}
-        
-        
-		echo "</div>";
-	}
+            echo "
+                <div class='btn navbar-btn product' pid='$product_id'>
+                    <a href='product.php?p=$product_id'>
+                        $product_name
+                        <small class='qty'>($total_quantity_sold)</small>
+                    </a>
+                </div>
+            ";
+        }
+    }
+    
+    echo "
+            </div>
+        </div>";
 }
+
+
+
 if(isset($_POST["brand"])){
 	$brand_query = "SELECT * FROM brands";
 	$run_query = mysqli_query($con,$brand_query);
 	echo "
 		<div class='aside'>
-							<h3 class='aside-title'>Brand</h3>
+							<h3 class='aside-title'>Brands We Offer</h3>
 							<div class='btn-group-vertical'>
 	";
 	if(mysqli_num_rows($run_query) > 0){
